@@ -1,0 +1,5 @@
+package context.interfaces;
+
+public enum ERoadStatus {
+
+}

@@ -1,0 +1,24 @@
+package contexto.carretera;
+
+import java.util.Dictionary;
+import java.util.Hashtable;
+
+import context.interfaces.ERoadStatus;
+import context.interfaces.ERoadType;
+import context.interfaces.IRoadContext;
+
+public class ContextoCarretera implements IRoadContext {
+
+	protected Dictionary<String, Object> props = new Hashtable<String, Object>();
+	
+	@Override
+	public ERoadType getType() {
+		return null;
+	}
+
+	@Override
+	public ERoadStatus getStatus() {
+		return null;
+	}
+
+}

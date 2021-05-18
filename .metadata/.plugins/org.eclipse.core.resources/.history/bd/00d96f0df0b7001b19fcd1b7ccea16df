@@ -1,0 +1,34 @@
+package ads.l2.adaptivecruisecontrol;
+
+import org.osgi.framework.BundleContext;
+
+import ADS.interfaces.IL2_ACC;
+
+public class ACC implements IL2_ACC {
+	
+	protected boolean isStarted = false;
+	protected BundleContext b_cont = null;
+	
+	public ACC(BundleContext cont) {
+		b_cont = cont;
+	}
+	
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		isStarted = true;
+	}
+
+	@Override
+	public void stop() {
+		// TODO Auto-generated method stub
+		isStarted = false;
+	}
+
+	@Override
+	public boolean isStarted() {
+		// TODO Auto-generated method stub
+		return isStarted;
+	}
+
+}

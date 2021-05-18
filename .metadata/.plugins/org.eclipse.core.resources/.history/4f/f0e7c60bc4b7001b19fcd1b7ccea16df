@@ -1,0 +1,21 @@
+package device.engine;
+
+import devices.interfaces.IEngine;
+
+public class Engine implements IEngine {
+	
+	protected int rpm = 0;
+	
+	@Override
+	public void setRPM(int rpm) {
+		// TODO Auto-generated method stub
+		this.rpm = rpm;
+	}
+
+	@Override
+	public int getRPM() {
+		// TODO Auto-generated method stub
+		return this.rpm;
+	}
+
+}

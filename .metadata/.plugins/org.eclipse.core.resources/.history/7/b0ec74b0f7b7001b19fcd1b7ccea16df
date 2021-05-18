@@ -1,0 +1,7 @@
+package contexto.carretera;
+
+import context.interfaces.IRoadContext;
+
+public class ContextoCarretera implements IRoadContext {
+
+}

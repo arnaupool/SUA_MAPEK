@@ -1,0 +1,42 @@
+package ads.l2.adaptivecruisecontrol;
+
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
+
+import ADS.interfaces.IL2_ACC;
+import devices.interfaces.IEngine;
+
+public class ACC implements IL2_ACC {
+	
+	protected boolean isStarted = false;
+	protected BundleContext b_cont = null;
+	
+	public ACC(BundleContext cont) {
+		b_cont = cont;
+	}
+	
+	@Override
+	public void start() {
+		System.out.println("[ACC] Starting");
+		isStarted = true;
+		ServiceReference ref =  b_cont.getServiceReference(IEngine.class);
+		if (ref != null) {
+			IEngine engine = (IEngine) b_cont.getService(ref);
+			System.out.println("[ACC] Engine RPM is: " + engine.getRPM());
+		} else {
+			System.out.println("[ACC] Engine not found");
+		}
+	}
+
+	@Override
+	public void stop() {
+		System.out.println("[ACC] Stopping");
+		isStarted = false;
+	}
+
+	@Override
+	public boolean isStarted() {
+		return isStarted;
+	}
+
+}
