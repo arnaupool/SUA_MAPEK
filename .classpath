@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="AutonomousCar.infrastructure/src"/>
+	<classpathentry kind="src" path="AutonomousCar.interfaces/src"/>
+	<classpathentry kind="src" path="AutonomousCar.simulation.console.commands/src"/>
+	<classpathentry kind="src" path="AutonomousCar.simulation.simulator/src"/>
+	<classpathentry kind="src" path="device.Engine/src"/>
+	<classpathentry kind="src" path="device.FrontDistanceSensor/src"/>
+	<classpathentry kind="src" path="device.HumanSensors/src"/>
+	<classpathentry kind="src" path="device.LeftDistanceSensor/src"/>
+	<classpathentry kind="src" path="device.LeftLineSensor/src"/>
+	<classpathentry kind="src" path="device.LIDAR/src"/>
+	<classpathentry kind="src" path="device.RearDistanceSensor/src"/>
+	<classpathentry kind="src" path="device.RightDistanceSensor/src"/>
+	<classpathentry kind="src" path="device.RightLineSensor/src"/>
+	<classpathentry kind="src" path="device.RoadSensor/src"/>
+	<classpathentry kind="src" path="device.Speedometer/src"/>
+	<classpathentry kind="src" path="device.Steering/src"/>
+	<classpathentry kind="src" path="driving.FallbackPlan.Emergency/src"/>
+	<classpathentry kind="src" path="driving.FallbackPlan.ParkInTheRoadShoulder/src"/>
+	<classpathentry kind="src" path="driving.L0.ManualDriving/src"/>
+	<classpathentry kind="src" path="driving.L1.AssistedDriving/src"/>
+	<classpathentry kind="src" path="driving.L2.AdaptiveCruiseControl/src"/>
+	<classpathentry kind="src" path="driving.L2.LaneKeepingAssist/src"/>
+	<classpathentry kind="src" path="driving.L3.CityChauffer/src"/>
+	<classpathentry kind="src" path="driving.L3.HighwayChauffer/src"/>
+	<classpathentry kind="src" path="driving.L3.TrafficJamChauffer/src"/>
+	<classpathentry kind="src" path="interaction.DashboardDisplay/src"/>
+	<classpathentry kind="src" path="interaction.DashboardIcon/src"/>
+	<classpathentry kind="src" path="interaction.DriverDisplay/src"/>
+	<classpathentry kind="src" path="interaction.NotificationService/src"/>
+	<classpathentry kind="src" path="interaction.Seats/src"/>
+	<classpathentry kind="src" path="interaction.Speakers/src"/>
+	<classpathentry kind="src" path="interaction.SteeringWheel/src"/>
+	<classpathentry kind="lib" path="C:/Users/Arnyr/.p2/pool/plugins/org.eclipse.osgi_3.16.200.v20210226-1447.jar" sourcepath="C:/Users/Arnyr/.p2/pool/plugins/org.eclipse.osgi.source_3.16.200.v20210226-1447.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/Arnyr/.p2/pool/plugins/org.eclipse.platform.doc.isv_4.19.0.v20210303-1700.jar!/reference/api"/>
+		</attributes>
+		<accessrules>
+			<accessrule kind="accessible" pattern="org/osgi/framework/*"/>
+			<accessrule ignoreifbetter="true" kind="nonaccessible" pattern="**/*"/>
+		</accessrules>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
