@@ -1,7 +1,0 @@
-package device.sensordistanciafrontal;
-
-import devices.interfaces.IDistanceSensor;
-
-public class SensorDistanciaFrontal implements IDistanceSensor{
-
-}

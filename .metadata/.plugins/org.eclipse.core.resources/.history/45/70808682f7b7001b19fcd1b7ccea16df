@@ -1,5 +1,0 @@
-package context.interfaces;
-
-public interface IRoadContext {
-
-}

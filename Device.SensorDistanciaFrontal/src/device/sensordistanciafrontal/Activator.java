@@ -6,13 +6,13 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import ADS.interfaces.ESensorPosition;
+import devices.interfaces.ESensorPosition;
 import devices.interfaces.IDistanceSensor;
 
 public class Activator implements BundleActivator {
 
-	protected IDistanceSensor sensor = null;
 	private static BundleContext context;
+	protected IDistanceSensor theSensor = null;
 
 	static BundleContext getContext() {
 		return context;
@@ -21,12 +21,12 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
 		
-		sensor = new SensorDistanciaFrontal();
+		theSensor = new SensorDistancia();
 		
 		Dictionary<String, Object> props = new Hashtable<String, Object>();
 		props.put("position", ESensorPosition.FRONT);
 		
-		this.context.registerService(IDistanceSensor.class, sensor, props);
+		this.context.registerService(IDistanceSensor.class, theSensor, props);
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {

@@ -4,8 +4,7 @@ Bundle-Name: SensorDistanciaTrasero
 Bundle-SymbolicName: Device.SensorDistanciaTrasero
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: device.sensordistanciatrasero.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-15
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Import-Package: devices.interfaces,
  org.osgi.framework;version="1.3.0"
 Automatic-Module-Name: Device.SensorDistanciaTrasero
-Require-Bundle: AutonomousCar.interfaces

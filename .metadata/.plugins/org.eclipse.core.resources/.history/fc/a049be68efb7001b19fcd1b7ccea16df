@@ -1,7 +1,0 @@
-package ads.l2.adaptivecruisecontrol;
-
-import ADS.interfaces.IL2_ACC;
-
-public class ACC implements IL2_ACC {
-
-}

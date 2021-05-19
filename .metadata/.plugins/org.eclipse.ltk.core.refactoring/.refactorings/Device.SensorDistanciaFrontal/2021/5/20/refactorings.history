@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Copy element &apos;SensorDistanciaFrontal.java&apos; to &apos;Device.SensorDistanciaTrasero/src/device.sensordistanciatrasero&apos;&#x0D;&#x0A;- Original project: &apos;Device.SensorDistanciaFrontal&apos;&#x0D;&#x0A;- Destination element: &apos;Device.SensorDistanciaTrasero/src/device.sensordistanciatrasero&apos;&#x0D;&#x0A;- Original element: &apos;device.sensordistanciafrontal.SensorDistanciaFrontal.java&apos;" description="Copy compilation unit" destination="=Device.SensorDistanciaTrasero/src&lt;device.sensordistanciatrasero" element1="/src&lt;device.sensordistanciafrontal{SensorDistanciaFrontal.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1621353668126" units="1" version="1.0"/>
-</session>

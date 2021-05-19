@@ -9,7 +9,6 @@ public class Activator implements BundleActivator {
 
 	private static BundleContext context;
 	protected IRoadContext contextoCarretera = null;
-	
 
 	static BundleContext getContext() {
 		return context;

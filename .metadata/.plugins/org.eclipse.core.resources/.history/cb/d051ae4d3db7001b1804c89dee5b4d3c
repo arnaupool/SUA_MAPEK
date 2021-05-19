@@ -1,5 +1,0 @@
-package devices.interfaces;
-
-public interface IEngine {
-
-}

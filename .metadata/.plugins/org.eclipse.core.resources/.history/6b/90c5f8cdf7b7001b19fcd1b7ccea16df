@@ -1,6 +1,0 @@
-package context.interfaces;
-
-public interface IRoadContext {
-	public ERoadType getType();
-	public ERoadStatus getStatus();
-}

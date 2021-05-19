@@ -8,7 +8,7 @@ import devices.interfaces.IEngine;
 public class Activator implements BundleActivator {
 
 	private static BundleContext context;
-	protected IEngine engine = null;
+	protected IEngine theEngine = null;
 
 	static BundleContext getContext() {
 		return context;
@@ -17,14 +17,17 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
 		
-		engine = new Engine();
-		engine.setRPM(2000);
+		theEngine = new Engine();
+		theEngine.setRPM(2000);
 		
-		bundleContext.registerService(IEngine.class, engine, null);
+		bundleContext.registerService(IEngine.class, theEngine, null);
+		
 	}
 
 	public void stop(BundleContext bundleContext) throws Exception {
-		engine.setRPM(0);
+		
+		theEngine.setRPM(0);		
+		
 		Activator.context = null;
 	}
 
