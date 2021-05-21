@@ -5,6 +5,8 @@ import org.osgi.framework.BundleContext;
 import sua.autonomouscar.devices.interfaces.ISpeedometer;
 import sua.autonomouscar.driving.interfaces.IDrivingService;
 import sua.autonomouscar.driving.interfaces.IL3_HighwayChauffer;
+import sua.autonomouscar.driving.interfaces.IL3_TrafficJamChauffer;
+import sua.autonomouscar.driving.l3.trafficjamchauffer.L3_TrafficJamChauffer;
 import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.infrastructure.devices.Engine;
 import sua.autonomouscar.infrastructure.devices.Steering;
@@ -48,6 +50,14 @@ public class L3_HighwayChauffer extends L3_DrivingService implements IL3_Highway
 			this.getNotificationService().notify("Cannot drive in L3 Autonomy level ...");
 			
 			tryChangeL2Driving();
+			return this;
+		}
+		
+		// REQUISITO ADS_L3-2
+		// Estando en HighwayChauffer se congestiona -> TrafficJamChauffer
+		
+		if(!isRoadFluid()) {
+			changeDrivingTrafficJamChauffer();
 			return this;
 		}
 
@@ -184,7 +194,35 @@ public class L3_HighwayChauffer extends L3_DrivingService implements IL3_Highway
 		
 		return this;
 	}
+	
+	protected void changeDrivingTrafficJamChauffer() {
+  
+		//Paramos el actual
+		this.stopDriving();
 
+		//Registramos el L3_TrafficJamChauffer
+		L3_TrafficJamChauffer trafficJamChaufferDriving = new L3_TrafficJamChauffer(context, "L3_TrafficJamChauffer");
+		trafficJamChaufferDriving.registerThing();
+		
+		//Inicializamos
+		IL3_TrafficJamChauffer trafficJamChaufferDrivingService = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+		trafficJamChaufferDrivingService.setHumanSensors("HumanSensors");
+		trafficJamChaufferDrivingService.setRoadSensor("RoadSensor");
+		trafficJamChaufferDrivingService.setEngine("Engine");
+		trafficJamChaufferDrivingService.setSteering("Steering");
+		trafficJamChaufferDrivingService.setFrontDistanceSensor("FrontDistanceSensor");
+		trafficJamChaufferDrivingService.setRearDistanceSensor("RearDistanceSensor");
+		trafficJamChaufferDrivingService.setRightDistanceSensor("RightDistanceSensor");
+		trafficJamChaufferDrivingService.setLeftDistanceSensor("LeftDistanceSensor");
+		trafficJamChaufferDrivingService.setRightLineSensor("RightLineSensor");
+		trafficJamChaufferDrivingService.setLeftLineSensor("LeftLineSensor");
+		trafficJamChaufferDrivingService.setReferenceSpeed(L3_TrafficJamChauffer.DEFAULT_REFERENCE_SPEED);
+		trafficJamChaufferDrivingService.setLongitudinalSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LONGITUDINAL_SECURITY_DISTANCE);
+		trafficJamChaufferDrivingService.setLateralSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LATERAL_SECURITY_DISTANCE);
+		trafficJamChaufferDrivingService.setNotificationService("NotificationService");		
+		trafficJamChaufferDrivingService.setFallbackPlan("EmergencyFallbackPlan");	
 
+		trafficJamChaufferDrivingService.startDriving();
 
+	}
 }

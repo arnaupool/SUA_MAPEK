@@ -57,7 +57,7 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		}
 		
 		//Requisito ADS_L3-5
-		if (this.getRoadSensor().getRoadStatus() == ERoadStatus.COLLAPSED || this.getRoadSensor().getRoadStatus() == ERoadStatus.JAM) {
+		if (!isRoadFluid()) {
 			if (this.getRoadSensor().getRoadType() == ERoadType.CITY) {
 				this.getNotificationService().notify("Changing to L3_CityChaffeur...");
 				System.out.println("[L3_TrafficJamChauffer] Changing to L3_CityChaffeur");

@@ -12,6 +12,7 @@ import sua.autonomouscar.driving.l1.assisteddriving.L1_AssistedDriving;
 import sua.autonomouscar.driving.l2.acc.L2_AdaptiveCruiseControl;
 import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.interfaces.EFaceStatus;
+import sua.autonomouscar.interfaces.ERoadStatus;
 import sua.autonomouscar.interfaces.ERoadType;
 import sua.autonomouscar.interfaces.IIdentifiable;
 
@@ -112,6 +113,10 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 		}
 	}
 
+	protected boolean isRoadFluid() {
+		return !(this.getRoadSensor().getRoadStatus() == ERoadStatus.COLLAPSED 
+				|| this.getRoadSensor().getRoadStatus() == ERoadStatus.JAM);
+	}
 	private void changeL1Driving() {
 		this.getNotificationService().notify("Changing to L1 driving function");
 		L1_AssistedDriving assistedControlDriving = new L1_AssistedDriving(context, "L1_AssistedDriving");
