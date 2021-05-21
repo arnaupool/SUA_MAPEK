@@ -39,7 +39,6 @@ public class L2_AdaptiveCruiseControl extends L2_DrivingService implements IL2_A
 		return this;
 	}	
 	
-	
 
 
 

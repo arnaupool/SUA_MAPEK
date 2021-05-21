@@ -45,7 +45,10 @@ public class L2_LaneKeepingAssist extends L2_DrivingService implements IL2_LaneK
 	}	
 	
 	
-
-
+	protected boolean canDriveL2Mode() {
+		return this.getLeftDistanceSensor() != null 
+				&& this.getRightDistanceSensor() != null 
+				&& this.getSteering() != null;
+	}
 
 }

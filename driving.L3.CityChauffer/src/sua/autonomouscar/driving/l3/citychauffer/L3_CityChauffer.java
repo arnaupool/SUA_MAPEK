@@ -9,8 +9,6 @@ import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.infrastructure.devices.Engine;
 import sua.autonomouscar.infrastructure.devices.Steering;
 import sua.autonomouscar.infrastructure.driving.L3_DrivingService;
-import sua.autonomouscar.interfaces.EFaceStatus;
-import sua.autonomouscar.interfaces.ERoadType;
 
 public class L3_CityChauffer extends L3_DrivingService implements IL3_CityChauffer {
 		
@@ -40,26 +38,13 @@ public class L3_CityChauffer extends L3_DrivingService implements IL3_CityChauff
 		// L3 city chauffer
 		
 		// Comprobamos que NO podemos mantener la conducción en nivel 3 de autonomia
-		if ( this.getRoadSensor().getRoadType() == ERoadType.OFF_ROAD || this.getRoadSensor().getRoadType() == ERoadType.STD_ROAD ) {
-			// No podemos seguir conduciendo de manera autónoma
+		
+		// Requisito ADS_L3-1
+		if ( !canDriveL3Mode() ) {
 			this.debugMessage("Cannot drive in L3 Autonomy level ...");
 			this.getNotificationService().notify("Cannot drive in L3 Autonomy level ...");
-			
-			// Realizamos TakeOver (devolver el control al conductor) si está preparado ...
-			if ( this.getHumanSensors().getFaceStatus() == EFaceStatus.LOOKING_FORWARD &&
-				 this.getHumanSensors().areTheHandsOnTheWheel() &&
-				 this.getHumanSensors().isDriverSeatOccupied() ) {
 
-				this.debugMessage("The driver is ready to TakeOver ...");
-				this.getNotificationService().notify("The driver is ready to TakeOver ...");
-				this.performTheTakeOver();
-				
-			} else {
-				// ... o si no podemos, activamos el Fallback Plan
-				this.debugMessage("Activating the Fallback Plan ...");
-				this.activateTheFallbackPlan();
-			}
-			
+			tryChangeL2Driving();			
 			return this;
 		}
 

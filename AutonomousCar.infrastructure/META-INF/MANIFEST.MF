@@ -8,6 +8,8 @@ Automatic-Module-Name: AutonomousCar.infrastructure
 Import-Package: org.osgi.framework,
  sua.autonomouscar.devices.interfaces,
  sua.autonomouscar.driving.interfaces,
+ sua.autonomouscar.driving.l1.assisteddriving,
+ sua.autonomouscar.driving.l2.acc,
  sua.autonomouscar.interaction.interfaces,
  sua.autonomouscar.interfaces,
  sua.autonomouscar.simulation.interfaces

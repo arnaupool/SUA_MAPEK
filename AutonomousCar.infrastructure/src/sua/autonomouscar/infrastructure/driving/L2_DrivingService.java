@@ -87,7 +87,19 @@ public abstract class L2_DrivingService extends L1_DrivingService implements IL2
 
 	protected IDistanceSensor getLeftDistanceSensor() {
 		return OSGiUtils.getService(context, IDistanceSensor.class, String.format("(%s=%s)", IIdentifiable.ID, this.leftDistanceSensor));
+
 	}
 
+	protected boolean canDriveL2_ACCMode() {
+		return this.getFrontDistanceSensor() != null && this.getEngine() != null;
+	}
+	
+	protected boolean canDriveL2_LKAMode() {
+		return this.getLeftDistanceSensor() != null 
+				&& this.getRightDistanceSensor() != null 
+				&& this.getSteering() != null;
+	}
 
+	
+	
 }

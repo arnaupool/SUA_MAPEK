@@ -54,9 +54,5 @@ public class L1_AssistedDriving extends L1_DrivingService implements IL1_Assiste
 		
 		return this;
 	}	
-	
-	
-
-
 
 }

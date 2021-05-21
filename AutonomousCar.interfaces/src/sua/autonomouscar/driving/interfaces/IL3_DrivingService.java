@@ -1,5 +1,7 @@
 package sua.autonomouscar.driving.interfaces;
 
+import sua.autonomouscar.interfaces.ERoadType;
+
 public interface IL3_DrivingService extends IL2_DrivingService {
 	
 	public void setHumanSensors(String humanSensors);
