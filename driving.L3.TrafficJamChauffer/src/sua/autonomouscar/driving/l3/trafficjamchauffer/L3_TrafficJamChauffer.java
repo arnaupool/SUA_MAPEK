@@ -10,12 +10,6 @@ import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.infrastructure.devices.Engine;
 import sua.autonomouscar.infrastructure.devices.Steering;
 import sua.autonomouscar.infrastructure.driving.L3_DrivingService;
-<<<<<<< HEAD
-=======
-import sua.autonomouscar.interfaces.EFaceStatus;
-import sua.autonomouscar.interfaces.ERoadStatus;
-import sua.autonomouscar.interfaces.ERoadType;
->>>>>>> cd46697ce7a5e8d0ad3530b84252f84d9506caeb
 
 public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_TrafficJamChauffer {
 	
@@ -58,7 +52,7 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		
 		//Requisito ADS_L3-5
 		if (!isRoadFluid()) {
-			if (this.getRoadSensor().getRoadType() == ERoadType.CITY) {
+			if (isRoadCity()) {
 				this.getNotificationService().notify("Changing to L3_CityChaffeur...");
 				System.out.println("[L3_TrafficJamChauffer] Changing to L3_CityChaffeur");
 				this.change2CityChauffer();
@@ -203,32 +197,7 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		return this;
 	}
 
-	public L3_TrafficJamChauffer change2CityChauffer() {
-		
-		this.stopDriving();
-		
-		IL3_TrafficJamChauffer TJChauffeur = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
-		TJChauffeur.setHumanSensors("HumanSensors");
-		TJChauffeur.setRoadSensor("RoadSensor");
-		TJChauffeur.setFallbackPlan("EmergencyFallBackPlan");
-		TJChauffeur.setEngine("Engine");		 
-		TJChauffeur.setSteering("Steering");
-		TJChauffeur.setFrontDistanceSensor("FrontDistanceSensor");
-		TJChauffeur.setRearDistanceSensor("RearDistanceSensor");
-		TJChauffeur.setRightDistanceSensor("RightDistanceSensor");
-		TJChauffeur.setLeftDistanceSensor("LeftDistanceSensor");
-		TJChauffeur.setRightLineSensor("RightLineSensor");
-		TJChauffeur.setLeftLineSensor("LeftLineSensor");
-		TJChauffeur.setReferenceSpeed(L3_TrafficJamChauffer.DEFAULT_REFERENCE_SPEED);
-		TJChauffeur.setLongitudinalSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LONGITUDINAL_SECURITY_DISTANCE);
-		TJChauffeur.setLateralSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LATERAL_SECURITY_DISTANCE);
-		TJChauffeur.setNotificationService("NotificationService");
-		//attachSensors(TJChauffeur);
-		
-		this.startDriving();
-		
-		return this;
-	}
+
 	
 	public IL3_DrivingService attachSensors(IL3_TrafficJamChauffer TJChauffeur) {
 		

@@ -8,8 +8,10 @@ import sua.autonomouscar.driving.interfaces.IFallbackPlan;
 import sua.autonomouscar.driving.interfaces.IL1_AssistedDriving;
 import sua.autonomouscar.driving.interfaces.IL2_AdaptiveCruiseControl;
 import sua.autonomouscar.driving.interfaces.IL3_DrivingService;
+import sua.autonomouscar.driving.interfaces.IL3_TrafficJamChauffer;
 import sua.autonomouscar.driving.l1.assisteddriving.L1_AssistedDriving;
 import sua.autonomouscar.driving.l2.acc.L2_AdaptiveCruiseControl;
+import sua.autonomouscar.driving.l3.trafficjamchauffer.L3_TrafficJamChauffer;
 import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.interfaces.EFaceStatus;
 import sua.autonomouscar.interfaces.ERoadStatus;
@@ -161,6 +163,32 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 		this.getNotificationService().notify("Changed to L2 driving funcion successfully");
 	}
 	
+
+	public void change2CityChauffer() {
+		
+		this.stopDriving();
+		
+		IL3_TrafficJamChauffer TJChauffeur = OSGiUtils.getService(context, IL3_TrafficJamChauffer.class);
+		TJChauffeur.setHumanSensors("HumanSensors");
+		TJChauffeur.setRoadSensor("RoadSensor");
+		TJChauffeur.setFallbackPlan("EmergencyFallBackPlan");
+		TJChauffeur.setEngine("Engine");		 
+		TJChauffeur.setSteering("Steering");
+		TJChauffeur.setFrontDistanceSensor("FrontDistanceSensor");
+		TJChauffeur.setRearDistanceSensor("RearDistanceSensor");
+		TJChauffeur.setRightDistanceSensor("RightDistanceSensor");
+		TJChauffeur.setLeftDistanceSensor("LeftDistanceSensor");
+		TJChauffeur.setRightLineSensor("RightLineSensor");
+		TJChauffeur.setLeftLineSensor("LeftLineSensor");
+		TJChauffeur.setReferenceSpeed(L3_TrafficJamChauffer.DEFAULT_REFERENCE_SPEED);
+		TJChauffeur.setLongitudinalSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LONGITUDINAL_SECURITY_DISTANCE);
+		TJChauffeur.setLateralSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LATERAL_SECURITY_DISTANCE);
+		TJChauffeur.setNotificationService("NotificationService");
+		//attachSensors(TJChauffeur);
+		
+		this.startDriving();
+	}
+	
 	/**
 	 * Devuelve un boolean que representa si el coche autónomo puede funcionar con un modo de conducción autónoma L3
 	 * Requirement ADS_L3-1: Deberá cambiar a L2 cuando el tipo de carretera sea estandar o offroad.
@@ -170,5 +198,44 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 		return !(this.getRoadSensor().getRoadType() == ERoadType.OFF_ROAD 
 				|| this.getRoadSensor().getRoadType() == ERoadType.STD_ROAD);
 	}
+	
+	protected boolean isRoadCity() {
+		return this.getRoadSensor().getRoadType() == ERoadType.CITY;
+	}
+	
+	protected void changeDrivingTrafficJamChauffer() {
+
+		// Paramos el actual
+		this.stopDriving();
+
+		// Registramos el L3_TrafficJamChauffer
+		L3_TrafficJamChauffer trafficJamChaufferDriving = new L3_TrafficJamChauffer(context, "L3_TrafficJamChauffer");
+		trafficJamChaufferDriving.registerThing();
+
+		// Inicializamos
+		IL3_TrafficJamChauffer trafficJamChaufferDrivingService = OSGiUtils.getService(context,
+				IL3_TrafficJamChauffer.class);
+		trafficJamChaufferDrivingService.setHumanSensors("HumanSensors");
+		trafficJamChaufferDrivingService.setRoadSensor("RoadSensor");
+		trafficJamChaufferDrivingService.setEngine("Engine");
+		trafficJamChaufferDrivingService.setSteering("Steering");
+		trafficJamChaufferDrivingService.setFrontDistanceSensor("FrontDistanceSensor");
+		trafficJamChaufferDrivingService.setRearDistanceSensor("RearDistanceSensor");
+		trafficJamChaufferDrivingService.setRightDistanceSensor("RightDistanceSensor");
+		trafficJamChaufferDrivingService.setLeftDistanceSensor("LeftDistanceSensor");
+		trafficJamChaufferDrivingService.setRightLineSensor("RightLineSensor");
+		trafficJamChaufferDrivingService.setLeftLineSensor("LeftLineSensor");
+		trafficJamChaufferDrivingService.setReferenceSpeed(L3_TrafficJamChauffer.DEFAULT_REFERENCE_SPEED);
+		trafficJamChaufferDrivingService
+				.setLongitudinalSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LONGITUDINAL_SECURITY_DISTANCE);
+		trafficJamChaufferDrivingService
+				.setLateralSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LATERAL_SECURITY_DISTANCE);
+		trafficJamChaufferDrivingService.setNotificationService("NotificationService");
+		trafficJamChaufferDrivingService.setFallbackPlan("EmergencyFallbackPlan");
+
+		trafficJamChaufferDrivingService.startDriving();
+	}
+
+
 	
 }
