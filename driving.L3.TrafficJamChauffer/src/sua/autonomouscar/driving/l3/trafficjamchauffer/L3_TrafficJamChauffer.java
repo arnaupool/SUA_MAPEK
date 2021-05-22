@@ -56,10 +56,17 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 				this.getNotificationService().notify("Changing to L3_CityChaffeur...");
 				System.out.println("[L3_TrafficJamChauffer] Changing to L3_CityChaffeur");
 				this.change2CityChauffer();
+				return this;
 			}
 			
 		} else {
-			//Por determinar
+			//ADS_L3-4
+			// Estando en traficJamChauffer via rapida descongestiona -> HigwayChauffer
+			if(!isRoadCity()) {
+				this.getNotificationService().notify("[L3_TrafficJamChauffer] Road fluid, changing to L3_HighwayChauffer");
+				changeDrivingHighwayChauffer();
+				return this;
+			}
 			
 		}
 
