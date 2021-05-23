@@ -46,8 +46,15 @@ public class NotificationService extends Thing implements INotificationService {
 		this.mechanisms.remove(m);
 		return this;
 	}
+	
+	//  Método para eliminar todos los mecanismos de interacción
+	public INotificationService removeAllInteractionMechanisms() {
+		this.mechanisms.clear();
+		return this;
+	}
 
 
 
 
 }
+ 

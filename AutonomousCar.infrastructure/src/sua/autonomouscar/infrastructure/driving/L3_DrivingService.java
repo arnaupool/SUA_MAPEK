@@ -264,5 +264,53 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 		
 		highwayChaufferDrivingservice.startDriving();
 	}
+	
+	/*
+	 * Según el estado del conductor, activa los mecanismos de interacción adecuados
+	 * Requisito INTERACT-1
+	 */
+	protected void checkDriverStatus() {
+		switch (this.getHumanSensors().getFaceStatus()) {
+		case LOOKING_FORWARD:
+			if(this.getHumanSensors().areTheHandsOnTheWheel() && this.getHumanSensors().isDriverSeatOccupied()) {
+				this.getNotificationService().removeAllInteractionMechanisms();
+				this.getNotificationService().addInteractionMechanism("SteeringWheel_HapticVibration");
+				this.getNotificationService().addInteractionMechanism("DriverDisplay_VisualText");
+				this.getNotificationService().addInteractionMechanism("Speakers_AuditoryBeep");
+			}
+			break;
+		case DISTRACTED:
+			this.getNotificationService().notify("Please, look forward!");
+			this.getNotificationService().removeAllInteractionMechanisms();
+			this.getNotificationService().addInteractionMechanism("SteeringWheel_HapticVibration");
+			this.getNotificationService().addInteractionMechanism("DriverDisplay_VisualText");
+			this.getNotificationService().addInteractionMechanism("Speakers_AuditoryBeep");
+			break;
+		case SLEEPING:
+			this.getNotificationService().notify("Please, WAKE UP! ... and look forward!");
+			this.getNotificationService().removeAllInteractionMechanisms();
+			this.getNotificationService().addInteractionMechanism("SteeringWheel_HapticVibration");
+			this.getNotificationService().addInteractionMechanism("DriverSeat_HapticVibration");
+			this.getNotificationService().addInteractionMechanism("Speakers_AuditorySound");
+			break;
+		default:
+			break;
+		}
+	}
+	
+	
+	protected void checkHandsStatus() {
+		if (!this.getHumanSensors().areTheHandsOnTheWheel()) {
+			this.getNotificationService().notify("Please, put the hands on the wheel!");	
+			this.getNotificationService().removeInteractionMechanism("SteeringWheel_HapticVibration");
+		}
+		else if(!this.getHumanSensors().isDriverSeatOccupied()) {
+			this.getNotificationService().removeInteractionMechanism("DriverSeat_HapticVibration");
+		}
+		else {
+			this.getNotificationService().addInteractionMechanism("SteeringWheel_HapticVibration");
+		}
+	}
+
 
 }

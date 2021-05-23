@@ -172,22 +172,16 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		// Advertimos al humano sí ...
 
 		// ... està distraído o dormido ...
-		switch (this.getHumanSensors().getFaceStatus()) {
-		case DISTRACTED:
-			this.getNotificationService().notify("Please, look forward!");
-			break;
-		case SLEEPING:
-			this.getNotificationService().notify("Please, WAKE UP! ... and look forward!");
-			break;
-		default:
-			break;
-		}
+		
+		//Requisito INTERACT-1
+		checkDriverStatus();
 		
 				
 		// ... el conductor no tiene las manos en el volante ...
-		if ( !this.getHumanSensors().areTheHandsOnTheWheel() ) {
-			this.getNotificationService().notify("Please, put the hands on the wheel!");
-		}
+		
+		
+		//Requisito INTERACT-2
+		checkHandsStatus();
 		
 		// ... el conductor no está en el asiento del conductor ...
 		if ( !this.getHumanSensors().isDriverSeatOccupied() ) {
