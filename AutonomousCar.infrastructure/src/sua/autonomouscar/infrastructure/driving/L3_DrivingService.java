@@ -298,7 +298,10 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 		}
 	}
 	
-	
+	/*
+	 * Activa mecanismos de interacción según situación de "manos en el volante"
+	 * Requisito INTERACT-2
+	 */
 	protected void checkHandsStatus() {
 		if (!this.getHumanSensors().areTheHandsOnTheWheel()) {
 			this.getNotificationService().notify("Please, put the hands on the wheel!");	
@@ -311,6 +314,28 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 			this.getNotificationService().addInteractionMechanism("SteeringWheel_HapticVibration");
 		}
 	}
+	
+	
+	/*
+	 * Activa mecanismos de interacción según situación de "ubicación del conductor"
+	 */
+	protected void checkDriverSeatStatus() {
+		if ( !this.getHumanSensors().isDriverSeatOccupied() ) {
+			if ( this.getHumanSensors().isCopilotSeatOccupied() ) {
+				this.getNotificationService().notify("Please, move to the driver seat!");
+				this.getNotificationService().removeInteractionMechanism("DriverSeat_HapticVibration");
+				this.getNotificationService().removeInteractionMechanism("DriverDisplay_VisualText");
+			}
+			else {
+				// No se puede conducir en L3 sin conductor. Activamos plan de emergencia
+				this.getNotificationService().notify("Cannot drive with a driver! Activating the Fallback Plan ...");
+				this.activateTheFallbackPlan();
+			}
+		}
+		else {
+			this.getNotificationService().addInteractionMechanism("DriverSeat_HapticVibration");
+			this.getNotificationService().addInteractionMechanism("DriverDisplay_VisualText");
 
-
+		}
+	}
 }

@@ -31,8 +31,6 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		this.setLateralSecurityDistance(DEFAULT_LATERAL_SECURITY_DISTANCE);
 	}
 
-	
-	
 	@Override
 	public IDrivingService performTheDrivingFunction() {
 		
@@ -184,30 +182,21 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		checkHandsStatus();
 		
 		// ... el conductor no está en el asiento del conductor ...
-		if ( !this.getHumanSensors().isDriverSeatOccupied() ) {
-			if ( this.getHumanSensors().isCopilotSeatOccupied() )
-				this.getNotificationService().notify("Please, move to the driver seat!");
-			else {
-				// No se puede conducir en L3 sin conductor. Activamos plan de emergencia
-				this.getNotificationService().notify("Cannot drive with a driver! Activating the Fallback Plan ...");
-				this.activateTheFallbackPlan();
-			}
-		}
-
+		
+		//Requisito INTERACT-3
+		checkDriverSeatStatus();
 		
 		return this;
 	}
 
-
-	
 	public IL3_DrivingService attachSensors(IL3_TrafficJamChauffer TJChauffeur) {
-		
-		//Refactorizar esto
-		
+
+		// Refactorizar esto
+
 		TJChauffeur.setHumanSensors("HumanSensors");
 		TJChauffeur.setRoadSensor("RoadSensor");
 		TJChauffeur.setFallbackPlan("EmergencyFallBackPlan");
-		TJChauffeur.setEngine("Engine");		 
+		TJChauffeur.setEngine("Engine");
 		TJChauffeur.setSteering("Steering");
 		TJChauffeur.setFrontDistanceSensor("FrontDistanceSensor");
 		TJChauffeur.setRearDistanceSensor("RearDistanceSensor");
@@ -219,9 +208,8 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		TJChauffeur.setLongitudinalSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LONGITUDINAL_SECURITY_DISTANCE);
 		TJChauffeur.setLateralSecurityDistance(L3_TrafficJamChauffer.DEFAULT_LATERAL_SECURITY_DISTANCE);
 		TJChauffeur.setNotificationService("NotificationService");
-		
+
 		return TJChauffeur;
 	}
-
 
 }

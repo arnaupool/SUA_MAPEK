@@ -186,15 +186,9 @@ public class L3_HighwayChauffer extends L3_DrivingService implements IL3_Highway
 		checkHandsStatus();
 
 		// ... el conductor no está en el asiento del conductor ...
-		if (!this.getHumanSensors().isDriverSeatOccupied()) {
-			if (this.getHumanSensors().isCopilotSeatOccupied())
-				this.getNotificationService().notify("Please, move to the driver seat!");
-			else {
-				// No se puede conducir en L3 sin conductor. Activamos plan de emergencia
-				this.getNotificationService().notify("Cannot drive with a driver! Activating the Fallback Plan ...");
-				this.activateTheFallbackPlan();
-			}
-		}
+		
+		//Requisito INTERACT-3
+		checkDriverSeatStatus();
 
 		return this;
 	}
