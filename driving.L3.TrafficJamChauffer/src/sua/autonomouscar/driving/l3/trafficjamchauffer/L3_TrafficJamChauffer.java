@@ -191,6 +191,10 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 			return this;
 		}
 		
+		//Requisitos ADS_L3-7 y ADS_L3-8
+		sensorFail();
+		setEmergencyPlan();
+		
 		return this;
 	}
 

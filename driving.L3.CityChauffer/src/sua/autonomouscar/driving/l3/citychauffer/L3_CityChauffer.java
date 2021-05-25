@@ -194,6 +194,10 @@ public class L3_CityChauffer extends L3_DrivingService implements IL3_CityChauff
 			changeDrivingL0Service();
 			return this;
 		}
+		
+		//Requisitos ADS_L3-7 y ADS_L3-8
+		sensorFail();
+		setEmergencyPlan();
 		return this;
 	}
 
