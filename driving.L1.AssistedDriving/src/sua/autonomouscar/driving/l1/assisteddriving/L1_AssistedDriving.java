@@ -51,6 +51,11 @@ public class L1_AssistedDriving extends L1_DrivingService implements IL1_Assiste
 			this.debugMessage("Monitoring driving parameters. Nothing to warn ...");
 		}
 		
+		//REQUISITO ADS-2
+		if(!this.isWorking()) {
+			this.changeDrivingL0Service();
+			return this;
+		}
 		
 		return this;
 	}	

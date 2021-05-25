@@ -173,7 +173,14 @@ public class L3_CityChauffer extends L3_DrivingService implements IL3_CityChauff
 		//Requisito INTERACT-3
 		checkDriverSeatStatus();
 
+		
+		//Requisito ADS-2
+		if(!this.isWorking()) {
+			changeDrivingL0Service();
+			return this;
+		}
 		return this;
 	}
 
 }
+ 

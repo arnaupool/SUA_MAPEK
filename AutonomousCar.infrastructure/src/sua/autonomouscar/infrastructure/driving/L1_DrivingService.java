@@ -5,7 +5,9 @@ import org.osgi.framework.BundleContext;
 import sua.autonomouscar.devices.interfaces.IDistanceSensor;
 import sua.autonomouscar.devices.interfaces.ILineSensor;
 import sua.autonomouscar.driving.interfaces.IDrivingService;
+import sua.autonomouscar.driving.interfaces.IL0_ManualDriving;
 import sua.autonomouscar.driving.interfaces.IL1_DrivingService;
+import sua.autonomouscar.driving.l0.manual.L0_ManualDriving;
 import sua.autonomouscar.infrastructure.OSGiUtils;
 import sua.autonomouscar.interaction.interfaces.INotificationService;
 import sua.autonomouscar.interfaces.IIdentifiable;
@@ -83,6 +85,17 @@ public abstract class L1_DrivingService extends L0_DrivingService implements IL1
 	@Override
 	public IDrivingService stopTheDrivingFunction() {
 		return this;
+	}
+	
+	protected void changeDrivingL0Service() {
+		
+		//Paramos el actual
+		this.stopDriving();
+		
+		L0_ManualDriving manualDriving = OSGiUtils.getService(context, IL0_ManualDriving.class);
+		
+		manualDriving.startDriving();
+	
 	}
 
 

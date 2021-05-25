@@ -189,6 +189,13 @@ public class L3_HighwayChauffer extends L3_DrivingService implements IL3_Highway
 		
 		//Requisito INTERACT-3
 		checkDriverSeatStatus();
+		
+		
+		//Requisitos ADS-2
+		if(!this.isWorking()) {
+			changeDrivingL0Service();
+			return this;
+		}
 
 		return this;
 	}

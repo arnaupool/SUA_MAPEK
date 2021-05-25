@@ -186,6 +186,13 @@ public class L3_TrafficJamChauffer extends L3_DrivingService implements IL3_Traf
 		//Requisito INTERACT-3
 		checkDriverSeatStatus();
 		
+		
+		//Requisito ADS-2
+		if(!this.isWorking()) {
+			changeDrivingL0Service();
+			return this;
+		}
+		
 		return this;
 	}
 

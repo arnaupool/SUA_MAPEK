@@ -11,5 +11,4 @@ public interface IThing extends IIdentifiable {
 	public IThing unregisterThing();
 	public IThing addImplementedInterface(String c);
 
-	
 }
