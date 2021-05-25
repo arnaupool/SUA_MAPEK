@@ -92,7 +92,7 @@ public abstract class L1_DrivingService extends L0_DrivingService implements IL1
 		//Paramos el actual
 		this.stopDriving();
 		
-		L0_ManualDriving manualDriving = OSGiUtils.getService(context, IL0_ManualDriving.class);
+		L0_ManualDriving manualDriving = (L0_ManualDriving) OSGiUtils.getService(context, IL0_ManualDriving.class);
 		
 		manualDriving.startDriving();
 	

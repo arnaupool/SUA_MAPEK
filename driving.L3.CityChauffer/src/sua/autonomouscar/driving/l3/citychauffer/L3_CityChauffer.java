@@ -45,6 +45,21 @@ public class L3_CityChauffer extends L3_DrivingService implements IL3_CityChauff
 			tryChangeL2Driving();
 			return this;
 		}
+		
+		// Requisito ADS_L3-6
+		if (isRoadHighway()) {
+			this.getNotificationService().notify("Changing to L3_HighwayChauffer...");
+			System.out.println("[L3_CityChauffer] Changing to L3_HighwayChauffer");
+			this.changeDrivingHighwayChauffer();
+			return this;
+		}
+		
+		if (!isRoadFluid()) {
+			this.getNotificationService().notify("Changing to L3_TrafficJamChauffer...");
+			System.out.println("[L3_CityChauffer] Changing to L3_TrafficJamChauffer");
+			this.changeDrivingTrafficJamChauffer();
+			return this;
+		}
 
 		//
 		// Control de la función primaria: MOVIMIENTO LONGITUDINAL

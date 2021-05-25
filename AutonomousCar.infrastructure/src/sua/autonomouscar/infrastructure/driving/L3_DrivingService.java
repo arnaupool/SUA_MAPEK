@@ -207,6 +207,11 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 	protected boolean isRoadCity() {
 		return this.getRoadSensor().getRoadType() == ERoadType.CITY;
 	}
+	
+	protected boolean isRoadHighway() {
+		return this.getRoadSensor().getRoadType() == ERoadType.HIGHWAY;
+	}
+	
 
 	protected void changeDrivingTrafficJamChauffer() {
 
