@@ -6,7 +6,9 @@ import sua.autonomouscar.devices.interfaces.IDistanceSensor;
 import sua.autonomouscar.devices.interfaces.IEngine;
 import sua.autonomouscar.devices.interfaces.ISteering;
 import sua.autonomouscar.driving.interfaces.IL2_DrivingService;
+import sua.autonomouscar.driving.interfaces.IL3_DrivingService;
 import sua.autonomouscar.infrastructure.OSGiUtils;
+import sua.autonomouscar.infrastructure.devices.DistanceSensor;
 import sua.autonomouscar.interfaces.IIdentifiable;
 
 public abstract class L2_DrivingService extends L1_DrivingService implements IL2_DrivingService {
@@ -99,7 +101,5 @@ public abstract class L2_DrivingService extends L1_DrivingService implements IL2
 				&& this.getRightDistanceSensor() != null 
 				&& this.getSteering() != null;
 	}
-
-	
 	
 }

@@ -190,6 +190,10 @@ public class L3_HighwayChauffer extends L3_DrivingService implements IL3_Highway
 		//Requisito INTERACT-3
 		checkDriverSeatStatus();
 		
+		/* Requisito ADS-1
+		 * En caso de estar disponibles, el servicio usará los mejores sensores disponibles
+		 * */
+		setBetterSensors();
 		
 		//Requisitos ADS-2
 		if(!this.isWorking()) {

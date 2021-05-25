@@ -35,6 +35,11 @@ public class L2_AdaptiveCruiseControl extends L2_DrivingService implements IL2_A
 		if ( !correction_performed ) {
 			this.debugMessage("Monitoring driving parameters. Nothing to warn ...");
 		}
+		
+		/* Requisito ADS-1
+		 * En caso de estar disponibles, el servicio usará los mejores sensores disponibles
+		 * */
+		setBetterSensors();
 				
 		//Requisito ADS-2
 		if(!this.isWorking())  {

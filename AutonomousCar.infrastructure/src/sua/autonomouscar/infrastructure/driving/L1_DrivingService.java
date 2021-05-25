@@ -9,6 +9,7 @@ import sua.autonomouscar.driving.interfaces.IL0_ManualDriving;
 import sua.autonomouscar.driving.interfaces.IL1_DrivingService;
 import sua.autonomouscar.driving.l0.manual.L0_ManualDriving;
 import sua.autonomouscar.infrastructure.OSGiUtils;
+import sua.autonomouscar.infrastructure.devices.DistanceSensor;
 import sua.autonomouscar.interaction.interfaces.INotificationService;
 import sua.autonomouscar.interfaces.IIdentifiable;
 
@@ -97,7 +98,37 @@ public abstract class L1_DrivingService extends L0_DrivingService implements IL1
 		manualDriving.startDriving();
 	
 	}
+	
+	/* Parte del requisito ADS_L3-7
+	 * L1 y L2 sólo tiene un sensor frontal
+	 * */
+	protected boolean allWorking() {
+		IDistanceSensor FrontDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=FrontDistanceSensor)");
+		
+		return ((DistanceSensor) FrontDistanceSensor).isWorking();
+	}
+	
+	protected boolean LIDARWorking() {
+		IDistanceSensor FrontDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-FrontDistanceSensor)");
+		
+		return ((DistanceSensor) FrontDistanceSensor).isWorking();
+	}
+	
+	protected void setNormalSensors() {
+		setFrontDistanceSensor("FrontDistanceSensor");
+	}
 
-
+	/* Requisito ADS-1
+	 * En caso de estar disponibles, el servicio usará los mejores sensores disponibles
+	 * */
+	protected void setBetterSensors() {
+		//check si está el LIDAR activado
+		
+		if (LIDARWorking()) {
+			if (allWorking()) {
+				setNormalSensors();
+			}
+		}
+	}
 
 }

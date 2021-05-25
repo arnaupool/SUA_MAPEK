@@ -353,40 +353,20 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 	}
 	
 	/*
-	 * Estando  activa  cualquier  función  de  conducciónde  nivel  L3,  falla  algún sensor necesario para dicha función
-	 * Deberá cambiarse este sensor por otro equivalente si es posible. En caso contrario,  deberá  desactivar  la  función  de 
-	 * conducción  de  este  nivel  y realizar un TakeOver o FallbackPlan (según proceda)
-	 * Requisito ADS_L3-7
+	 * Requisitos ADS_L3-7 y ADS_L3-8
 	 * */
-	
 	protected void sensorFail() {
 		// Si falla algún distanceSensor, emplear el LIDAR
-		IDistanceSensor FrontDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=FrontDistanceSensor)");
-		IDistanceSensor RearDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=RearDistanceSensor)");
-		IDistanceSensor RightDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=RightDistanceSensor)");
-		IDistanceSensor LeftDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LeftDistanceSensor)");
 		
-		boolean allWorking = ((DistanceSensor) FrontDistanceSensor).isWorking() && ((DistanceSensor) RearDistanceSensor).isWorking()
-				&& ((DistanceSensor) RightDistanceSensor).isWorking() && ((DistanceSensor) LeftDistanceSensor).isWorking();
-		
-		if (!allWorking) {
+		if (!allWorking()) {
 			this.debugMessage("[L3_DrivingService] Sensor fail encountered, attempting to resolve the issue...");
 			this.getNotificationService().notify("[L3_DrivingService] Sensor fail encountered, attempting to resolve the issue...");
+			
 			//Si alguno falla, cogemos los del LIDAR
-			FrontDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-FrontDistanceSensor)");
-			RearDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-RearDistanceSensor)");
-			RightDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-RightDistanceSensor)");
-			LeftDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-LeftDistanceSensor)");
-			
-			boolean LIDARWorking = ((DistanceSensor) FrontDistanceSensor).isWorking() && ((DistanceSensor) RearDistanceSensor).isWorking()
-					&& ((DistanceSensor) RightDistanceSensor).isWorking() && ((DistanceSensor) LeftDistanceSensor).isWorking();
-			
-			if (LIDARWorking) {
+			if (LIDARWorking()) {
+				
 				//Si están disponibles y en funcionamiento, seteamos los sensores del LIDAR
-				this.setFrontDistanceSensor("LIDAR-FrontDistanceSensor");
-		    	this.setRearDistanceSensor("LIDAR-RearDistanceSensor");
-		    	this.setRightDistanceSensor("LIDAR-RightDistanceSensor");
-		    	this.setLeftDistanceSensor("LIDAR-LeftDistanceSensor");
+				setLIDARSensors();
 			} else {
 				this.debugMessage("[L3_DrivingService] Failed to resolve the issue, activating fallback plan");
 				this.getNotificationService().notify("[L3_DrivingService]  Failed to resolve the issue, activating fallback plan");
@@ -394,14 +374,15 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 				 * ParkInTheRoadFallBack plan: Requiere una vía rápida o normal, acceso al control del motor y steering,
 				 * y sensores de distancia lateral y de carril derechos.
 				 * No se consideran los fallos en el motor o steering
+				 * 
+				 * 1. Paramos el de conducir 
 				 * */
-				
-				//Cogemos si están disponibles los sensores necesarios
-				RightDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=RightDistanceSensor)");			
-				ILineSensor RightLineSensor = OSGiUtils.getService(context, ILineSensor.class, "(" + IIdentifiable.ID + "=RightLineSensor)");
+				this.stopDriving();
 				
 				if (canBeSetParkFallbackPlan()) {
+					
 					setFallbackPlan("ParkInTheRoadShoulderFallbackPlan");
+					activateFallback();
 				} else {
 					//Todo ha fallado, iniciar el EmergencyFallbackPlan
 					
@@ -411,6 +392,7 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 							+ "any harm caused to you or the environment that surrounds you. For more information, visit http://www.thiscompany.com/terms-of-use/. Best of luck!");
 					
 					setFallbackPlan("EmergencyFallbackPlan");
+					activateFallback();
 					
 				}
 				
@@ -438,6 +420,63 @@ public abstract class L3_DrivingService extends L2_DrivingService implements IL3
 		}
 		
 		return false;
+	}
+	
+	protected IL3_DrivingService activateFallback() {
+		this.stopDriving();
+		getFallbackPlan().startDriving();
+		
+		return this;
+	}
+	
+	protected void setLIDARSensors() {
+		this.setFrontDistanceSensor("LIDAR-FrontDistanceSensor");
+    	this.setRearDistanceSensor("LIDAR-RearDistanceSensor");
+    	this.setRightDistanceSensor("LIDAR-RightDistanceSensor");
+    	this.setLeftDistanceSensor("LIDAR-LeftDistanceSensor");
+	}
+	
+	protected void setNormalSensors() {
+		setFrontDistanceSensor("FrontDistanceSensor");
+		setLeftDistanceSensor("LeftDistanceSensor");
+		setRightDistanceSensor("RightDistanceSensor");
+		setRearDistanceSensor("RearDistanceSensor");
+	}
+	
+	/* Parte del requisito ADS_L3-7
+	 * L3 tiene todos los sensores
+	 * */
+	protected boolean allWorking() {
+		IDistanceSensor FrontDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=FrontDistanceSensor)");
+		IDistanceSensor RearDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=RearDistanceSensor)");
+		IDistanceSensor RightDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=RightDistanceSensor)");
+		IDistanceSensor LeftDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LeftDistanceSensor)");
+		
+		return ((DistanceSensor) FrontDistanceSensor).isWorking() && ((DistanceSensor) RearDistanceSensor).isWorking()
+				&& ((DistanceSensor) RightDistanceSensor).isWorking() && ((DistanceSensor) LeftDistanceSensor).isWorking();
+	}
+	
+	protected boolean LIDARWorking() {
+		IDistanceSensor FrontDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-FrontDistanceSensor)");
+		IDistanceSensor RearDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-RearDistanceSensor)");
+		IDistanceSensor RightDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-RightDistanceSensor)");
+		IDistanceSensor LeftDistanceSensor = OSGiUtils.getService(context, IDistanceSensor.class, "(" + IIdentifiable.ID + "=LIDAR-LeftDistanceSensor)");
+		
+		return ((DistanceSensor) FrontDistanceSensor).isWorking() && ((DistanceSensor) RearDistanceSensor).isWorking()
+				&& ((DistanceSensor) RightDistanceSensor).isWorking() && ((DistanceSensor) LeftDistanceSensor).isWorking();
+	}
+	
+	/* Requisito ADS-1
+	 * En caso de estar disponibles, el servicio usará los mejores sensores disponibles
+	 * */
+	protected void setBetterSensors() {
+		//check si está el LIDAR activado
+		
+		if (LIDARWorking()) {
+			if (allWorking()) {
+				setNormalSensors();
+			}
+		}
 	}
 	
 }

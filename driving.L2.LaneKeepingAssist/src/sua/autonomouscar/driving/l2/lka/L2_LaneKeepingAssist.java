@@ -41,6 +41,11 @@ public class L2_LaneKeepingAssist extends L2_DrivingService implements IL2_LaneK
 			this.debugMessage("Monitoring driving parameters. Nothing to warn about ...");
 		}
 		
+		/* Requisito ADS-1
+		 * En caso de estar disponibles, el servicio usará los mejores sensores disponibles
+		 * */
+		setBetterSensors();
+		
 		//Requisito ADS-2
 		if(!this.isWorking()) {
 			changeDrivingL0Service();
